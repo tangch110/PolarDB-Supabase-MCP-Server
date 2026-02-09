@@ -118,9 +118,9 @@ The following tools are available to the LLM:
 - `deploy_edge_function`: Deploys a new Edge Function to a project
 
 ### Edge Functions Secrets
-- `list_edge_function_secrets`: Lists all Edge Function secrets (encrypted values)
-- `create_edge_function_secrets`: Creates or updates Edge Function secrets (supports batch operations, values are encrypted)
-- `delete_edge_function_secrets`: Deletes Edge Function secrets (supports batch deletion)
+- `list_ef_secrets`: Lists all Edge Function secrets (encrypted values). 
+- `create_ef_secrets`: Creates or updates Edge Function secrets (batch supported; values are encrypted). 
+- `delete_ef_secrets`: Deletes Edge Function secrets (batch deletion supported). 
 
 **Note**: Secrets management supports two authentication methods: Dashboard authentication (username/password) is preferred, but Service Role Key can also be used. Secrets are automatically encrypted when stored.
 

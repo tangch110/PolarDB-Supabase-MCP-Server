@@ -26,9 +26,9 @@ PolarDB Supabase MCP，提供完整的数据库管理、Edge Functions 和存储
 - `deploy_edge_function` - 部署 Edge Function
 
 #### Edge Functions Secrets 管理
-- `list_edge_function_secrets` - 列出所有 Edge Function secrets（加密值）
-- `create_edge_function_secrets` - 创建或更新 Edge Function secrets（支持批量操作，值会被加密存储）
-- `delete_edge_function_secrets` - 删除 Edge Function secrets（支持批量删除）
+- `list_ef_secrets` - 列出所有 Edge Function secrets（加密值）。
+- `create_ef_secrets` - 创建或更新 Edge Function secrets（支持批量，值加密存储）。
+- `delete_ef_secrets` - 删除 Edge Function secrets（支持批量删除）。
 
 **认证方式**: Edge Functions 和 Secrets 管理支持两种认证方式：
 1. **Dashboard 认证**（优先）：使用 Dashboard 用户名和密码（Basic Auth）

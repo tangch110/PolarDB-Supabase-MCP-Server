@@ -129,7 +129,8 @@ export function getPolarDBTools({ platform, projectId, readOnly }: PolarDBToolsO
       }
     }),
 
-    list_edge_function_secrets: tool({
+    // Short name to keep polardb-supabase_* under 60 chars (Cursor MCP limit)
+    list_ef_secrets: tool({
       description: "List all Edge Function secrets in the project",
       parameters: z.object({}),
       async execute() {
@@ -137,7 +138,8 @@ export function getPolarDBTools({ platform, projectId, readOnly }: PolarDBToolsO
       }
     }),
 
-    create_edge_function_secrets: tool({
+    // Short name to keep polardb-supabase_* under 60 chars (Cursor MCP limit)
+    create_ef_secrets: tool({
       description: "Create or update Edge Function secrets. Secrets are encrypted and stored securely.",
       parameters: z.object({
         secrets: z.array(z.object({
@@ -154,7 +156,8 @@ export function getPolarDBTools({ platform, projectId, readOnly }: PolarDBToolsO
       }
     }),
 
-    delete_edge_function_secrets: tool({
+    // Short name to keep polardb-supabase_* under 60 chars (Cursor MCP limit)
+    delete_ef_secrets: tool({
       description: "Delete Edge Function secrets from the project",
       parameters: z.object({
         secret_names: z.array(z.string()).describe("Array of secret names to delete")

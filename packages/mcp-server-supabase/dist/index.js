@@ -23363,14 +23363,16 @@ function getPolarDBTools({ platform, projectId, readOnly }) {
         });
       }
     }),
-    list_edge_function_secrets: Hv({
+    // Short name to keep polardb-supabase_* under 60 chars (Cursor MCP limit)
+    list_ef_secrets: Hv({
       description: "List all Edge Function secrets in the project",
       parameters: external_exports.object({}),
       async execute() {
         return await platform.listSecrets(projectId || "default");
       }
     }),
-    create_edge_function_secrets: Hv({
+    // Short name to keep polardb-supabase_* under 60 chars (Cursor MCP limit)
+    create_ef_secrets: Hv({
       description: "Create or update Edge Function secrets. Secrets are encrypted and stored securely.",
       parameters: external_exports.object({
         secrets: external_exports.array(external_exports.object({
@@ -23385,7 +23387,8 @@ function getPolarDBTools({ platform, projectId, readOnly }) {
         return await platform.createSecrets(projectId || "default", secrets);
       }
     }),
-    delete_edge_function_secrets: Hv({
+    // Short name to keep polardb-supabase_* under 60 chars (Cursor MCP limit)
+    delete_ef_secrets: Hv({
       description: "Delete Edge Function secrets from the project",
       parameters: external_exports.object({
         secret_names: external_exports.array(external_exports.string()).describe("Array of secret names to delete")

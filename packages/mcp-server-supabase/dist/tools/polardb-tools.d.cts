@@ -126,12 +126,12 @@ declare function getPolarDBTools({ platform, projectId, readOnly }: PolarDBTools
         import_map_path?: string | undefined;
         entrypoint_path?: string | undefined;
     }, "files">>;
-    list_edge_function_secrets: Tool<z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>, {
+    list_ef_secrets: Tool<z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>, {
         name: string;
         value: string;
         updated_at: string | null;
     }[]>;
-    create_edge_function_secrets: Tool<z.ZodObject<{
+    create_ef_secrets: Tool<z.ZodObject<{
         secrets: z.ZodArray<z.ZodObject<{
             name: z.ZodString;
             value: z.ZodString;
@@ -157,7 +157,7 @@ declare function getPolarDBTools({ platform, projectId, readOnly }: PolarDBTools
         value: string;
         updated_at: string | null;
     }[]>;
-    delete_edge_function_secrets: Tool<z.ZodObject<{
+    delete_ef_secrets: Tool<z.ZodObject<{
         secret_names: z.ZodArray<z.ZodString, "many">;
     }, "strip", z.ZodTypeAny, {
         secret_names: string[];
