@@ -1,13 +1,14 @@
 import type { InitData } from '@supabase/mcp-utils';
-import type { 
-  SupabasePlatform, 
-  ExecuteSqlOptions, 
-  Migration, 
-  ApplyMigrationOptions, 
+import type {
+  SupabasePlatform,
+  ExecuteSqlOptions,
+  Migration,
+  ApplyMigrationOptions,
   Organization,
   Project,
   EdgeFunction,
   DeployEdgeFunctionOptions,
+  UpdateEdgeFunctionOptions,
   CreateProjectOptions,
   CreateBranchOptions,
   ResetBranchOptions,
@@ -308,6 +309,46 @@ export class PolarDBPlatform implements SupabasePlatform {
       };
     } catch (error) {
       throw new Error(`Failed to deploy Edge Function: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  async updateEdgeFunction(projectId: string, functionSlug: string, options: UpdateEdgeFunctionOptions): Promise<Omit<EdgeFunction, 'files'>> {
+    try {
+      const { verify_jwt } = options;
+
+      const body: any = {};
+      if (verify_jwt !== undefined) {
+        body.verify_jwt = verify_jwt;
+      }
+
+      const response = await fetch(`${this.apiUrl}/api/v1/projects/default/functions/${functionSlug}`, {
+        method: 'PATCH',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update Edge Function: ${response.status} ${errorText}`);
+      }
+
+      const result = await response.json();
+
+      return {
+        id: result.id || functionSlug,
+        slug: functionSlug,
+        name: result.name || functionSlug,
+        status: result.status || 'active',
+        version: result.version || 1,
+        created_at: result.created_at || Date.now(),
+        updated_at: result.updated_at || Date.now(),
+        verify_jwt: result.verify_jwt ?? verify_jwt ?? false,
+        import_map: result.import_map || false,
+        import_map_path: result.import_map_path,
+        entrypoint_path: result.entrypoint_path
+      };
+    } catch (error) {
+      throw new Error(`Failed to update Edge Function: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 

@@ -103,6 +103,11 @@ export const deployEdgeFunctionOptionsSchema = z.object({
       content: z.string(),
     })
   ),
+  verify_jwt: z.boolean().optional(),
+});
+
+export const updateEdgeFunctionOptionsSchema = z.object({
+  verify_jwt: z.boolean().optional(),
 });
 
 export const executeSqlOptionsSchema = z.object({
@@ -154,6 +159,9 @@ export type ResetBranchOptions = z.infer<typeof resetBranchOptionsSchema>;
 export type DeployEdgeFunctionOptions = z.infer<
   typeof deployEdgeFunctionOptionsSchema
 >;
+export type UpdateEdgeFunctionOptions = z.infer<
+  typeof updateEdgeFunctionOptionsSchema
+>;
 
 export type ExecuteSqlOptions = z.infer<typeof executeSqlOptionsSchema>;
 export type ApplyMigrationOptions = z.infer<typeof applyMigrationOptionsSchema>;
@@ -202,7 +210,12 @@ export type SupabasePlatform = {
     projectId: string,
     options: DeployEdgeFunctionOptions
   ): Promise<Omit<EdgeFunction, 'files'>>;
-  
+  updateEdgeFunction(
+    projectId: string,
+    functionSlug: string,
+    options: UpdateEdgeFunctionOptions
+  ): Promise<Omit<EdgeFunction, 'files'>>;
+
   // Edge function secrets
   listSecrets(projectId: string): Promise<Secret[]>;
   createSecrets(

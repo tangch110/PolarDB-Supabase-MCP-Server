@@ -256,6 +256,7 @@ declare const deployEdgeFunctionOptionsSchema: z.ZodObject<{
         name: string;
         content: string;
     }>, "many">;
+    verify_jwt: z.ZodOptional<z.ZodBoolean>;
 }, "strip", z.ZodTypeAny, {
     name: string;
     entrypoint_path: string;
@@ -263,6 +264,7 @@ declare const deployEdgeFunctionOptionsSchema: z.ZodObject<{
         name: string;
         content: string;
     }[];
+    verify_jwt?: boolean | undefined;
     import_map_path?: string | undefined;
 }, {
     name: string;
@@ -271,7 +273,15 @@ declare const deployEdgeFunctionOptionsSchema: z.ZodObject<{
         name: string;
         content: string;
     }[];
+    verify_jwt?: boolean | undefined;
     import_map_path?: string | undefined;
+}>;
+declare const updateEdgeFunctionOptionsSchema: z.ZodObject<{
+    verify_jwt: z.ZodOptional<z.ZodBoolean>;
+}, "strip", z.ZodTypeAny, {
+    verify_jwt?: boolean | undefined;
+}, {
+    verify_jwt?: boolean | undefined;
 }>;
 declare const executeSqlOptionsSchema: z.ZodObject<{
     query: z.ZodString;
@@ -364,6 +374,7 @@ type CreateProjectOptions = z.infer<typeof createProjectOptionsSchema>;
 type CreateBranchOptions = z.infer<typeof createBranchOptionsSchema>;
 type ResetBranchOptions = z.infer<typeof resetBranchOptionsSchema>;
 type DeployEdgeFunctionOptions = z.infer<typeof deployEdgeFunctionOptionsSchema>;
+type UpdateEdgeFunctionOptions = z.infer<typeof updateEdgeFunctionOptionsSchema>;
 type ExecuteSqlOptions = z.infer<typeof executeSqlOptionsSchema>;
 type ApplyMigrationOptions = z.infer<typeof applyMigrationOptionsSchema>;
 type Migration = z.infer<typeof migrationSchema>;
@@ -391,6 +402,7 @@ type SupabasePlatform = {
     listEdgeFunctions(projectId: string): Promise<EdgeFunction[]>;
     getEdgeFunction(projectId: string, functionSlug: string): Promise<EdgeFunction>;
     deployEdgeFunction(projectId: string, options: DeployEdgeFunctionOptions): Promise<Omit<EdgeFunction, 'files'>>;
+    updateEdgeFunction(projectId: string, functionSlug: string, options: UpdateEdgeFunctionOptions): Promise<Omit<EdgeFunction, 'files'>>;
     listSecrets(projectId: string): Promise<Secret[]>;
     createSecrets(projectId: string, secrets: CreateSecretsOptions): Promise<Secret[]>;
     deleteSecrets(projectId: string, secretNames: string[]): Promise<void>;
@@ -411,4 +423,4 @@ type SupabasePlatform = {
     listAllBuckets(projectId: string): Promise<StorageBucket[]>;
 };
 
-export { type ApplyMigrationOptions as A, type Branch as B, type CreateSecretsOptions as C, type DeployEdgeFunctionOptions as D, type ExecuteSqlOptions as E, type GenerateTypescriptTypesResult as G, type ListMigrationsResult as L, type Migration as M, type Organization as O, type Project as P, type ResetBranchOptions as R, type SupabasePlatform as S, type StorageBucket as a, type EdgeFunction as b, type Secret as c, type CreateProjectOptions as d, type CreateBranchOptions as e, type StorageConfig as f, storageConfigSchema as g, branchSchema as h, edgeFunctionSchema as i, createProjectOptionsSchema as j, createBranchOptionsSchema as k, deployEdgeFunctionOptionsSchema as l, executeSqlOptionsSchema as m, applyMigrationOptionsSchema as n, organizationSchema as o, projectSchema as p, migrationSchema as q, resetBranchOptionsSchema as r, storageBucketSchema as s, getLogsOptionsSchema as t, generateTypescriptTypesResultSchema as u, secretSchema as v, createSecretOptionsSchema as w, createSecretsOptionsSchema as x, type GetLogsOptions as y, type CreateSecretOptions as z };
+export { type ApplyMigrationOptions as A, type Branch as B, type CreateSecretsOptions as C, type DeployEdgeFunctionOptions as D, type ExecuteSqlOptions as E, updateEdgeFunctionOptionsSchema as F, type GenerateTypescriptTypesResult as G, type ListMigrationsResult as L, type Migration as M, type Organization as O, type Project as P, type ResetBranchOptions as R, type SupabasePlatform as S, type UpdateEdgeFunctionOptions as U, type StorageBucket as a, type EdgeFunction as b, type Secret as c, type CreateProjectOptions as d, type CreateBranchOptions as e, type StorageConfig as f, type CreateSecretOptions as g, type GetLogsOptions as h, applyMigrationOptionsSchema as i, branchSchema as j, createBranchOptionsSchema as k, createProjectOptionsSchema as l, createSecretOptionsSchema as m, createSecretsOptionsSchema as n, deployEdgeFunctionOptionsSchema as o, edgeFunctionSchema as p, executeSqlOptionsSchema as q, generateTypescriptTypesResultSchema as r, getLogsOptionsSchema as s, migrationSchema as t, organizationSchema as u, projectSchema as v, resetBranchOptionsSchema as w, secretSchema as x, storageBucketSchema as y, storageConfigSchema as z };

@@ -37,6 +37,7 @@ import {
   type Secret,
   type StorageConfig,
   type SupabasePlatform,
+  type UpdateEdgeFunctionOptions,
 } from './index.js';
 
 const { version } = packageJson;
@@ -422,6 +423,32 @@ export function createSupabaseApiPlatform(
       );
 
       assertSuccess(response, 'Failed to deploy Edge Function');
+
+      return response.data;
+    },
+    async updateEdgeFunction(
+      projectId: string,
+      functionSlug: string,
+      options: UpdateEdgeFunctionOptions
+    ) {
+      const { verify_jwt } = options;
+
+      const response = await managementApiClient.PATCH(
+        '/v1/projects/{ref}/functions/{function_slug}',
+        {
+          params: {
+            path: {
+              ref: projectId,
+              function_slug: functionSlug,
+            },
+          },
+          body: {
+            verify_jwt,
+          },
+        }
+      );
+
+      assertSuccess(response, 'Failed to update Edge Function');
 
       return response.data;
     },

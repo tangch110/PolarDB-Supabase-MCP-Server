@@ -1,6 +1,6 @@
 import { Tool } from '@supabase/mcp-utils';
 import { z } from 'zod';
-import { S as SupabasePlatform } from '../types-BGR5CTgA.js';
+import { S as SupabasePlatform } from '../types-6YVDhwu7.js';
 
 interface PolarDBToolsOptions {
     platform: SupabasePlatform;

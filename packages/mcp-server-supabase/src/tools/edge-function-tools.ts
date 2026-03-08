@@ -42,12 +42,17 @@ export function getEdgeFunctionTools({
           .array(
             z.object({
               name: z.string(),
-              content: z.string(),
+              content: z.string().optional(),
+              file_path: z.string().optional().describe('Local file path, alternative to content'),
             })
           )
           .describe(
-            'The files to upload. This should include the entrypoint and any relative dependencies.'
+            'The files to upload. This should include the entrypoint and any relative dependencies. Each file must have either content (string) or file_path (local path).'
           ),
+        verify_jwt: z
+          .boolean()
+          .optional()
+          .describe('Whether to enable JWT verification for this function'),
       }),
       inject: { project_id },
       execute: async ({
@@ -56,12 +61,32 @@ export function getEdgeFunctionTools({
         entrypoint_path,
         import_map_path,
         files,
+        verify_jwt,
       }) => {
+        // 读取本地文件内容
+        const processedFiles = await Promise.all(
+          files.map(async (file) => {
+            if (file.content) {
+              return { name: file.name, content: file.content };
+            } else if (file.file_path) {
+              try {
+                const content = await Deno.readTextFile(file.file_path);
+                return { name: file.name, content };
+              } catch (error) {
+                throw new Error(`Failed to read file ${file.file_path}: ${error instanceof Error ? error.message : String(error)}`);
+              }
+            } else {
+              throw new Error(`File ${file.name} must have either content or file_path`);
+            }
+          })
+        );
+
         return await platform.deployEdgeFunction(project_id, {
           name,
           entrypoint_path,
           import_map_path,
-          files,
+          files: processedFiles,
+          verify_jwt,
         });
       },
     }),
@@ -101,6 +126,26 @@ export function getEdgeFunctionTools({
       execute: async ({ project_id, secret_names }) => {
         await platform.deleteSecrets(project_id, secret_names);
         return { success: true, message: 'Secrets deleted successfully' };
+      },
+    }),
+    update_edge_function: injectableTool({
+      description: 'Updates an existing Edge Function configuration (e.g., enable/disable JWT verification).',
+      parameters: z.object({
+        project_id: z.string(),
+        function_slug: z.string().describe('The slug of the function to update'),
+        verify_jwt: z
+          .boolean()
+          .optional()
+          .describe('Whether to enable JWT verification for this function'),
+      }),
+      inject: { project_id },
+      execute: async ({ project_id, function_slug, verify_jwt }) => {
+        if (verify_jwt === undefined) {
+          throw new Error('At least one field to update must be provided (e.g., verify_jwt)');
+        }
+        return await platform.updateEdgeFunction(project_id, function_slug, {
+          verify_jwt,
+        });
       },
     }),
   };

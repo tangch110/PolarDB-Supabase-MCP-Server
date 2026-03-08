@@ -1,4 +1,4 @@
-import { S as SupabasePlatform } from './types-BGR5CTgA.js';
+import { S as SupabasePlatform } from './types-6YVDhwu7.js';
 export { FeatureGroup, SupabaseMcpServerOptions, SupabasePlatformOptions, createSupabaseMcpServer } from './server.js';
 export { PolarDBToolsOptions, getPolarDBTools } from './tools/polardb-tools.js';
 import '@supabase/mcp-utils';

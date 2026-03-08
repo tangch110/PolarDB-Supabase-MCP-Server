@@ -38,127 +38,15 @@ __export(platform_exports, {
   resetBranchOptionsSchema: () => resetBranchOptionsSchema,
   secretSchema: () => secretSchema,
   storageBucketSchema: () => storageBucketSchema,
-  storageConfigSchema: () => storageConfigSchema
+  storageConfigSchema: () => storageConfigSchema,
+  updateEdgeFunctionOptionsSchema: () => updateEdgeFunctionOptionsSchema
 });
 module.exports = __toCommonJS(platform_exports);
 
-// ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/external.js
-var external_exports = {};
-__export(external_exports, {
-  BRAND: () => BRAND,
-  DIRTY: () => DIRTY,
-  EMPTY_PATH: () => EMPTY_PATH,
-  INVALID: () => INVALID,
-  NEVER: () => NEVER,
-  OK: () => OK,
-  ParseStatus: () => ParseStatus,
-  Schema: () => ZodType,
-  ZodAny: () => ZodAny,
-  ZodArray: () => ZodArray,
-  ZodBigInt: () => ZodBigInt,
-  ZodBoolean: () => ZodBoolean,
-  ZodBranded: () => ZodBranded,
-  ZodCatch: () => ZodCatch,
-  ZodDate: () => ZodDate,
-  ZodDefault: () => ZodDefault,
-  ZodDiscriminatedUnion: () => ZodDiscriminatedUnion,
-  ZodEffects: () => ZodEffects,
-  ZodEnum: () => ZodEnum,
-  ZodError: () => ZodError,
-  ZodFirstPartyTypeKind: () => ZodFirstPartyTypeKind,
-  ZodFunction: () => ZodFunction,
-  ZodIntersection: () => ZodIntersection,
-  ZodIssueCode: () => ZodIssueCode,
-  ZodLazy: () => ZodLazy,
-  ZodLiteral: () => ZodLiteral,
-  ZodMap: () => ZodMap,
-  ZodNaN: () => ZodNaN,
-  ZodNativeEnum: () => ZodNativeEnum,
-  ZodNever: () => ZodNever,
-  ZodNull: () => ZodNull,
-  ZodNullable: () => ZodNullable,
-  ZodNumber: () => ZodNumber,
-  ZodObject: () => ZodObject,
-  ZodOptional: () => ZodOptional,
-  ZodParsedType: () => ZodParsedType,
-  ZodPipeline: () => ZodPipeline,
-  ZodPromise: () => ZodPromise,
-  ZodReadonly: () => ZodReadonly,
-  ZodRecord: () => ZodRecord,
-  ZodSchema: () => ZodType,
-  ZodSet: () => ZodSet,
-  ZodString: () => ZodString,
-  ZodSymbol: () => ZodSymbol,
-  ZodTransformer: () => ZodEffects,
-  ZodTuple: () => ZodTuple,
-  ZodType: () => ZodType,
-  ZodUndefined: () => ZodUndefined,
-  ZodUnion: () => ZodUnion,
-  ZodUnknown: () => ZodUnknown,
-  ZodVoid: () => ZodVoid,
-  addIssueToContext: () => addIssueToContext,
-  any: () => anyType,
-  array: () => arrayType,
-  bigint: () => bigIntType,
-  boolean: () => booleanType,
-  coerce: () => coerce,
-  custom: () => custom,
-  date: () => dateType,
-  datetimeRegex: () => datetimeRegex,
-  defaultErrorMap: () => en_default,
-  discriminatedUnion: () => discriminatedUnionType,
-  effect: () => effectsType,
-  enum: () => enumType,
-  function: () => functionType,
-  getErrorMap: () => getErrorMap,
-  getParsedType: () => getParsedType,
-  instanceof: () => instanceOfType,
-  intersection: () => intersectionType,
-  isAborted: () => isAborted,
-  isAsync: () => isAsync,
-  isDirty: () => isDirty,
-  isValid: () => isValid,
-  late: () => late,
-  lazy: () => lazyType,
-  literal: () => literalType,
-  makeIssue: () => makeIssue,
-  map: () => mapType,
-  nan: () => nanType,
-  nativeEnum: () => nativeEnumType,
-  never: () => neverType,
-  null: () => nullType,
-  nullable: () => nullableType,
-  number: () => numberType,
-  object: () => objectType,
-  objectUtil: () => objectUtil,
-  oboolean: () => oboolean,
-  onumber: () => onumber,
-  optional: () => optionalType,
-  ostring: () => ostring,
-  pipeline: () => pipelineType,
-  preprocess: () => preprocessType,
-  promise: () => promiseType,
-  quotelessJson: () => quotelessJson,
-  record: () => recordType,
-  set: () => setType,
-  setErrorMap: () => setErrorMap,
-  strictObject: () => strictObjectType,
-  string: () => stringType,
-  symbol: () => symbolType,
-  transformer: () => effectsType,
-  tuple: () => tupleType,
-  undefined: () => undefinedType,
-  union: () => unionType,
-  unknown: () => unknownType,
-  util: () => util,
-  void: () => voidType
-});
-
-// ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/util.js
+// ../../node_modules/.pnpm/registry.npmmirror.com+zod@3.24.1/node_modules/zod/lib/index.mjs
 var util;
 (function(util2) {
-  util2.assertEqual = (_) => {
-  };
+  util2.assertEqual = (val) => val;
   function assertIs(_arg) {
   }
   util2.assertIs = assertIs;
@@ -202,7 +90,7 @@ var util;
     }
     return void 0;
   };
-  util2.isInteger = typeof Number.isInteger === "function" ? (val) => Number.isInteger(val) : (val) => typeof val === "number" && Number.isFinite(val) && Math.floor(val) === val;
+  util2.isInteger = typeof Number.isInteger === "function" ? (val) => Number.isInteger(val) : (val) => typeof val === "number" && isFinite(val) && Math.floor(val) === val;
   function joinValues(array, separator = " | ") {
     return array.map((val) => typeof val === "string" ? `'${val}'` : val).join(separator);
   }
@@ -254,7 +142,7 @@ var getParsedType = (data) => {
     case "string":
       return ZodParsedType.string;
     case "number":
-      return Number.isNaN(data) ? ZodParsedType.nan : ZodParsedType.number;
+      return isNaN(data) ? ZodParsedType.nan : ZodParsedType.number;
     case "boolean":
       return ZodParsedType.boolean;
     case "function":
@@ -287,8 +175,6 @@ var getParsedType = (data) => {
       return ZodParsedType.unknown;
   }
 };
-
-// ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/ZodError.js
 var ZodIssueCode = util.arrayToEnum([
   "invalid_type",
   "invalid_literal",
@@ -388,9 +274,8 @@ var ZodError = class _ZodError extends Error {
     const formErrors = [];
     for (const sub of this.issues) {
       if (sub.path.length > 0) {
-        const firstEl = sub.path[0];
-        fieldErrors[firstEl] = fieldErrors[firstEl] || [];
-        fieldErrors[firstEl].push(mapper(sub));
+        fieldErrors[sub.path[0]] = fieldErrors[sub.path[0]] || [];
+        fieldErrors[sub.path[0]].push(mapper(sub));
       } else {
         formErrors.push(mapper(sub));
       }
@@ -405,8 +290,6 @@ ZodError.create = (issues) => {
   const error = new ZodError(issues);
   return error;
 };
-
-// ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/locales/en.js
 var errorMap = (issue, _ctx) => {
   let message;
   switch (issue.code) {
@@ -468,8 +351,6 @@ var errorMap = (issue, _ctx) => {
         message = `String must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
       else if (issue.type === "number")
         message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
-      else if (issue.type === "bigint")
-        message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
       else if (issue.type === "date")
         message = `Date must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${new Date(Number(issue.minimum))}`;
       else
@@ -507,18 +388,13 @@ var errorMap = (issue, _ctx) => {
   }
   return { message };
 };
-var en_default = errorMap;
-
-// ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/errors.js
-var overrideErrorMap = en_default;
+var overrideErrorMap = errorMap;
 function setErrorMap(map) {
   overrideErrorMap = map;
 }
 function getErrorMap() {
   return overrideErrorMap;
 }
-
-// ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js
 var makeIssue = (params) => {
   const { data, path, errorMaps, issueData } = params;
   const fullPath = [...path, ...issueData.path || []];
@@ -558,7 +434,7 @@ function addIssueToContext(ctx, issueData) {
       // then schema-bound map if available
       overrideMap,
       // then global override map
-      overrideMap === en_default ? void 0 : en_default
+      overrideMap === errorMap ? void 0 : errorMap
       // then global default map
     ].filter((x) => !!x)
   });
@@ -627,15 +503,24 @@ var isAborted = (x) => x.status === "aborted";
 var isDirty = (x) => x.status === "dirty";
 var isValid = (x) => x.status === "valid";
 var isAsync = (x) => typeof Promise !== "undefined" && x instanceof Promise;
-
-// ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/errorUtil.js
+function __classPrivateFieldGet(receiver, state, kind, f) {
+  if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+  return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+}
+function __classPrivateFieldSet(receiver, state, value, kind, f) {
+  if (kind === "m") throw new TypeError("Private method is not writable");
+  if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+  if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+  return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
+}
 var errorUtil;
 (function(errorUtil2) {
   errorUtil2.errToObj = (message) => typeof message === "string" ? { message } : message || {};
-  errorUtil2.toString = (message) => typeof message === "string" ? message : message?.message;
+  errorUtil2.toString = (message) => typeof message === "string" ? message : message === null || message === void 0 ? void 0 : message.message;
 })(errorUtil || (errorUtil = {}));
-
-// ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js
+var _ZodEnum_cache;
+var _ZodNativeEnum_cache;
 var ParseInputLazyPath = class {
   constructor(parent, value, path, key) {
     this._cachedPath = [];
@@ -646,7 +531,7 @@ var ParseInputLazyPath = class {
   }
   get path() {
     if (!this._cachedPath.length) {
-      if (Array.isArray(this._key)) {
+      if (this._key instanceof Array) {
         this._cachedPath.push(...this._path, ...this._key);
       } else {
         this._cachedPath.push(...this._path, this._key);
@@ -684,16 +569,17 @@ function processCreateParams(params) {
   if (errorMap2)
     return { errorMap: errorMap2, description };
   const customMap = (iss, ctx) => {
+    var _a, _b;
     const { message } = params;
     if (iss.code === "invalid_enum_value") {
-      return { message: message ?? ctx.defaultError };
+      return { message: message !== null && message !== void 0 ? message : ctx.defaultError };
     }
     if (typeof ctx.data === "undefined") {
-      return { message: message ?? required_error ?? ctx.defaultError };
+      return { message: (_a = message !== null && message !== void 0 ? message : required_error) !== null && _a !== void 0 ? _a : ctx.defaultError };
     }
     if (iss.code !== "invalid_type")
       return { message: ctx.defaultError };
-    return { message: message ?? invalid_type_error ?? ctx.defaultError };
+    return { message: (_b = message !== null && message !== void 0 ? message : invalid_type_error) !== null && _b !== void 0 ? _b : ctx.defaultError };
   };
   return { errorMap: customMap, description };
 }
@@ -745,13 +631,14 @@ var ZodType = class {
     throw result.error;
   }
   safeParse(data, params) {
+    var _a;
     const ctx = {
       common: {
         issues: [],
-        async: params?.async ?? false,
-        contextualErrorMap: params?.errorMap
+        async: (_a = params === null || params === void 0 ? void 0 : params.async) !== null && _a !== void 0 ? _a : false,
+        contextualErrorMap: params === null || params === void 0 ? void 0 : params.errorMap
       },
-      path: params?.path || [],
+      path: (params === null || params === void 0 ? void 0 : params.path) || [],
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data,
@@ -761,6 +648,7 @@ var ZodType = class {
     return handleResult(ctx, result);
   }
   "~validate"(data) {
+    var _a, _b;
     const ctx = {
       common: {
         issues: [],
@@ -781,7 +669,7 @@ var ZodType = class {
           issues: ctx.common.issues
         };
       } catch (err) {
-        if (err?.message?.toLowerCase()?.includes("encountered")) {
+        if ((_b = (_a = err === null || err === void 0 ? void 0 : err.message) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === null || _b === void 0 ? void 0 : _b.includes("encountered")) {
           this["~standard"].async = true;
         }
         ctx.common = {
@@ -806,10 +694,10 @@ var ZodType = class {
     const ctx = {
       common: {
         issues: [],
-        contextualErrorMap: params?.errorMap,
+        contextualErrorMap: params === null || params === void 0 ? void 0 : params.errorMap,
         async: true
       },
-      path: params?.path || [],
+      path: (params === null || params === void 0 ? void 0 : params.path) || [],
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data,
@@ -999,14 +887,13 @@ var base64urlRegex = /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_
 var dateRegexSource = `((\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-((0[13578]|1[02])-(0[1-9]|[12]\\d|3[01])|(0[469]|11)-(0[1-9]|[12]\\d|30)|(02)-(0[1-9]|1\\d|2[0-8])))`;
 var dateRegex = new RegExp(`^${dateRegexSource}$`);
 function timeRegexSource(args) {
-  let secondsRegexSource = `[0-5]\\d`;
+  let regex = `([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d`;
   if (args.precision) {
-    secondsRegexSource = `${secondsRegexSource}\\.\\d{${args.precision}}`;
+    regex = `${regex}\\.\\d{${args.precision}}`;
   } else if (args.precision == null) {
-    secondsRegexSource = `${secondsRegexSource}(\\.\\d+)?`;
+    regex = `${regex}(\\.\\d+)?`;
   }
-  const secondsQuantifier = args.precision ? "+" : "?";
-  return `([01]\\d|2[0-3]):[0-5]\\d(:${secondsRegexSource})${secondsQuantifier}`;
+  return regex;
 }
 function timeRegex(args) {
   return new RegExp(`^${timeRegexSource(args)}$`);
@@ -1034,20 +921,16 @@ function isValidJWT(jwt, alg) {
     return false;
   try {
     const [header] = jwt.split(".");
-    if (!header)
-      return false;
     const base64 = header.replace(/-/g, "+").replace(/_/g, "/").padEnd(header.length + (4 - header.length % 4) % 4, "=");
     const decoded = JSON.parse(atob(base64));
     if (typeof decoded !== "object" || decoded === null)
       return false;
-    if ("typ" in decoded && decoded?.typ !== "JWT")
-      return false;
-    if (!decoded.alg)
+    if (!decoded.typ || !decoded.alg)
       return false;
     if (alg && decoded.alg !== alg)
       return false;
     return true;
-  } catch {
+  } catch (_a) {
     return false;
   }
 }
@@ -1206,7 +1089,7 @@ var ZodString = class _ZodString extends ZodType {
       } else if (check.kind === "url") {
         try {
           new URL(input.data);
-        } catch {
+        } catch (_a) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
             validation: "url",
@@ -1418,6 +1301,7 @@ var ZodString = class _ZodString extends ZodType {
     return this._addCheck({ kind: "cidr", ...errorUtil.errToObj(options) });
   }
   datetime(options) {
+    var _a, _b;
     if (typeof options === "string") {
       return this._addCheck({
         kind: "datetime",
@@ -1429,10 +1313,10 @@ var ZodString = class _ZodString extends ZodType {
     }
     return this._addCheck({
       kind: "datetime",
-      precision: typeof options?.precision === "undefined" ? null : options?.precision,
-      offset: options?.offset ?? false,
-      local: options?.local ?? false,
-      ...errorUtil.errToObj(options?.message)
+      precision: typeof (options === null || options === void 0 ? void 0 : options.precision) === "undefined" ? null : options === null || options === void 0 ? void 0 : options.precision,
+      offset: (_a = options === null || options === void 0 ? void 0 : options.offset) !== null && _a !== void 0 ? _a : false,
+      local: (_b = options === null || options === void 0 ? void 0 : options.local) !== null && _b !== void 0 ? _b : false,
+      ...errorUtil.errToObj(options === null || options === void 0 ? void 0 : options.message)
     });
   }
   date(message) {
@@ -1448,8 +1332,8 @@ var ZodString = class _ZodString extends ZodType {
     }
     return this._addCheck({
       kind: "time",
-      precision: typeof options?.precision === "undefined" ? null : options?.precision,
-      ...errorUtil.errToObj(options?.message)
+      precision: typeof (options === null || options === void 0 ? void 0 : options.precision) === "undefined" ? null : options === null || options === void 0 ? void 0 : options.precision,
+      ...errorUtil.errToObj(options === null || options === void 0 ? void 0 : options.message)
     });
   }
   duration(message) {
@@ -1466,8 +1350,8 @@ var ZodString = class _ZodString extends ZodType {
     return this._addCheck({
       kind: "includes",
       value,
-      position: options?.position,
-      ...errorUtil.errToObj(options?.message)
+      position: options === null || options === void 0 ? void 0 : options.position,
+      ...errorUtil.errToObj(options === null || options === void 0 ? void 0 : options.message)
     });
   }
   startsWith(value, message) {
@@ -1599,10 +1483,11 @@ var ZodString = class _ZodString extends ZodType {
   }
 };
 ZodString.create = (params) => {
+  var _a;
   return new ZodString({
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodString,
-    coerce: params?.coerce ?? false,
+    coerce: (_a = params === null || params === void 0 ? void 0 : params.coerce) !== null && _a !== void 0 ? _a : false,
     ...processCreateParams(params)
   });
 };
@@ -1610,9 +1495,9 @@ function floatSafeRemainder(val, step) {
   const valDecCount = (val.toString().split(".")[1] || "").length;
   const stepDecCount = (step.toString().split(".")[1] || "").length;
   const decCount = valDecCount > stepDecCount ? valDecCount : stepDecCount;
-  const valInt = Number.parseInt(val.toFixed(decCount).replace(".", ""));
-  const stepInt = Number.parseInt(step.toFixed(decCount).replace(".", ""));
-  return valInt % stepInt / 10 ** decCount;
+  const valInt = parseInt(val.toFixed(decCount).replace(".", ""));
+  const stepInt = parseInt(step.toFixed(decCount).replace(".", ""));
+  return valInt % stepInt / Math.pow(10, decCount);
 }
 var ZodNumber = class _ZodNumber extends ZodType {
   constructor() {
@@ -1822,8 +1707,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
     return !!this._def.checks.find((ch) => ch.kind === "int" || ch.kind === "multipleOf" && util.isInteger(ch.value));
   }
   get isFinite() {
-    let max = null;
-    let min = null;
+    let max = null, min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "finite" || ch.kind === "int" || ch.kind === "multipleOf") {
         return true;
@@ -1842,7 +1726,7 @@ ZodNumber.create = (params) => {
   return new ZodNumber({
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodNumber,
-    coerce: params?.coerce || false,
+    coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
     ...processCreateParams(params)
   });
 };
@@ -1856,7 +1740,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
     if (this._def.coerce) {
       try {
         input.data = BigInt(input.data);
-      } catch {
+      } catch (_a) {
         return this._getInvalidInput(input);
       }
     }
@@ -2011,10 +1895,11 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
   }
 };
 ZodBigInt.create = (params) => {
+  var _a;
   return new ZodBigInt({
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodBigInt,
-    coerce: params?.coerce ?? false,
+    coerce: (_a = params === null || params === void 0 ? void 0 : params.coerce) !== null && _a !== void 0 ? _a : false,
     ...processCreateParams(params)
   });
 };
@@ -2039,7 +1924,7 @@ var ZodBoolean = class extends ZodType {
 ZodBoolean.create = (params) => {
   return new ZodBoolean({
     typeName: ZodFirstPartyTypeKind.ZodBoolean,
-    coerce: params?.coerce || false,
+    coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
     ...processCreateParams(params)
   });
 };
@@ -2058,7 +1943,7 @@ var ZodDate = class _ZodDate extends ZodType {
       });
       return INVALID;
     }
-    if (Number.isNaN(input.data.getTime())) {
+    if (isNaN(input.data.getTime())) {
       const ctx2 = this._getOrReturnCtx(input);
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_date
@@ -2147,7 +2032,7 @@ var ZodDate = class _ZodDate extends ZodType {
 ZodDate.create = (params) => {
   return new ZodDate({
     checks: [],
-    coerce: params?.coerce || false,
+    coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
     typeName: ZodFirstPartyTypeKind.ZodDate,
     ...processCreateParams(params)
   });
@@ -2422,8 +2307,7 @@ var ZodObject = class _ZodObject extends ZodType {
       return this._cached;
     const shape = this._def.shape();
     const keys = util.objectKeys(shape);
-    this._cached = { shape, keys };
-    return this._cached;
+    return this._cached = { shape, keys };
   }
   _parse(input) {
     const parsedType = this._getType(input);
@@ -2473,8 +2357,8 @@ var ZodObject = class _ZodObject extends ZodType {
           });
           status.dirty();
         }
-      } else if (unknownKeys === "strip") {
-      } else {
+      } else if (unknownKeys === "strip") ;
+      else {
         throw new Error(`Internal ZodObject error: invalid unknownKeys value.`);
       }
     } else {
@@ -2521,10 +2405,11 @@ var ZodObject = class _ZodObject extends ZodType {
       unknownKeys: "strict",
       ...message !== void 0 ? {
         errorMap: (issue, ctx) => {
-          const defaultError = this._def.errorMap?.(issue, ctx).message ?? ctx.defaultError;
+          var _a, _b, _c, _d;
+          const defaultError = (_c = (_b = (_a = this._def).errorMap) === null || _b === void 0 ? void 0 : _b.call(_a, issue, ctx).message) !== null && _c !== void 0 ? _c : ctx.defaultError;
           if (issue.code === "unrecognized_keys")
             return {
-              message: errorUtil.errToObj(message).message ?? defaultError
+              message: (_d = errorUtil.errToObj(message).message) !== null && _d !== void 0 ? _d : defaultError
             };
           return {
             message: defaultError
@@ -2655,11 +2540,11 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   pick(mask) {
     const shape = {};
-    for (const key of util.objectKeys(mask)) {
+    util.objectKeys(mask).forEach((key) => {
       if (mask[key] && this.shape[key]) {
         shape[key] = this.shape[key];
       }
-    }
+    });
     return new _ZodObject({
       ...this._def,
       shape: () => shape
@@ -2667,11 +2552,11 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   omit(mask) {
     const shape = {};
-    for (const key of util.objectKeys(this.shape)) {
+    util.objectKeys(this.shape).forEach((key) => {
       if (!mask[key]) {
         shape[key] = this.shape[key];
       }
-    }
+    });
     return new _ZodObject({
       ...this._def,
       shape: () => shape
@@ -2685,14 +2570,14 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   partial(mask) {
     const newShape = {};
-    for (const key of util.objectKeys(this.shape)) {
+    util.objectKeys(this.shape).forEach((key) => {
       const fieldSchema = this.shape[key];
       if (mask && !mask[key]) {
         newShape[key] = fieldSchema;
       } else {
         newShape[key] = fieldSchema.optional();
       }
-    }
+    });
     return new _ZodObject({
       ...this._def,
       shape: () => newShape
@@ -2700,7 +2585,7 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   required(mask) {
     const newShape = {};
-    for (const key of util.objectKeys(this.shape)) {
+    util.objectKeys(this.shape).forEach((key) => {
       if (mask && !mask[key]) {
         newShape[key] = this.shape[key];
       } else {
@@ -2711,7 +2596,7 @@ var ZodObject = class _ZodObject extends ZodType {
         }
         newShape[key] = newField;
       }
-    }
+    });
     return new _ZodObject({
       ...this._def,
       shape: () => newShape
@@ -3327,7 +3212,12 @@ var ZodFunction = class _ZodFunction extends ZodType {
       return makeIssue({
         data: args,
         path: ctx.path,
-        errorMaps: [ctx.common.contextualErrorMap, ctx.schemaErrorMap, getErrorMap(), en_default].filter((x) => !!x),
+        errorMaps: [
+          ctx.common.contextualErrorMap,
+          ctx.schemaErrorMap,
+          getErrorMap(),
+          errorMap
+        ].filter((x) => !!x),
         issueData: {
           code: ZodIssueCode.invalid_arguments,
           argumentsError: error
@@ -3338,7 +3228,12 @@ var ZodFunction = class _ZodFunction extends ZodType {
       return makeIssue({
         data: returns,
         path: ctx.path,
-        errorMaps: [ctx.common.contextualErrorMap, ctx.schemaErrorMap, getErrorMap(), en_default].filter((x) => !!x),
+        errorMaps: [
+          ctx.common.contextualErrorMap,
+          ctx.schemaErrorMap,
+          getErrorMap(),
+          errorMap
+        ].filter((x) => !!x),
         issueData: {
           code: ZodIssueCode.invalid_return_type,
           returnTypeError: error
@@ -3462,6 +3357,10 @@ function createZodEnum(values, params) {
   });
 }
 var ZodEnum = class _ZodEnum extends ZodType {
+  constructor() {
+    super(...arguments);
+    _ZodEnum_cache.set(this, void 0);
+  }
   _parse(input) {
     if (typeof input.data !== "string") {
       const ctx = this._getOrReturnCtx(input);
@@ -3473,10 +3372,10 @@ var ZodEnum = class _ZodEnum extends ZodType {
       });
       return INVALID;
     }
-    if (!this._cache) {
-      this._cache = new Set(this._def.values);
+    if (!__classPrivateFieldGet(this, _ZodEnum_cache, "f")) {
+      __classPrivateFieldSet(this, _ZodEnum_cache, new Set(this._def.values), "f");
     }
-    if (!this._cache.has(input.data)) {
+    if (!__classPrivateFieldGet(this, _ZodEnum_cache, "f").has(input.data)) {
       const ctx = this._getOrReturnCtx(input);
       const expectedValues = this._def.values;
       addIssueToContext(ctx, {
@@ -3525,8 +3424,13 @@ var ZodEnum = class _ZodEnum extends ZodType {
     });
   }
 };
+_ZodEnum_cache = /* @__PURE__ */ new WeakMap();
 ZodEnum.create = createZodEnum;
 var ZodNativeEnum = class extends ZodType {
+  constructor() {
+    super(...arguments);
+    _ZodNativeEnum_cache.set(this, void 0);
+  }
   _parse(input) {
     const nativeEnumValues = util.getValidEnumValues(this._def.values);
     const ctx = this._getOrReturnCtx(input);
@@ -3539,10 +3443,10 @@ var ZodNativeEnum = class extends ZodType {
       });
       return INVALID;
     }
-    if (!this._cache) {
-      this._cache = new Set(util.getValidEnumValues(this._def.values));
+    if (!__classPrivateFieldGet(this, _ZodNativeEnum_cache, "f")) {
+      __classPrivateFieldSet(this, _ZodNativeEnum_cache, new Set(util.getValidEnumValues(this._def.values)), "f");
     }
-    if (!this._cache.has(input.data)) {
+    if (!__classPrivateFieldGet(this, _ZodNativeEnum_cache, "f").has(input.data)) {
       const expectedValues = util.objectValues(nativeEnumValues);
       addIssueToContext(ctx, {
         received: ctx.data,
@@ -3557,6 +3461,7 @@ var ZodNativeEnum = class extends ZodType {
     return this._def.values;
   }
 };
+_ZodNativeEnum_cache = /* @__PURE__ */ new WeakMap();
 ZodNativeEnum.create = (values, params) => {
   return new ZodNativeEnum({
     values,
@@ -3697,7 +3602,7 @@ var ZodEffects = class extends ZodType {
           parent: ctx
         });
         if (!isValid(base))
-          return INVALID;
+          return base;
         const result = effect.transform(base.value, checkCtx);
         if (result instanceof Promise) {
           throw new Error(`Asynchronous transform encountered during synchronous parse operation. Use .parseAsync instead.`);
@@ -3706,11 +3611,8 @@ var ZodEffects = class extends ZodType {
       } else {
         return this._def.schema._parseAsync({ data: ctx.data, path: ctx.path, parent: ctx }).then((base) => {
           if (!isValid(base))
-            return INVALID;
-          return Promise.resolve(effect.transform(base.value, checkCtx)).then((result) => ({
-            status: status.value,
-            value: result
-          }));
+            return base;
+          return Promise.resolve(effect.transform(base.value, checkCtx)).then((result) => ({ status: status.value, value: result }));
         });
       }
     }
@@ -3962,30 +3864,16 @@ ZodReadonly.create = (type, params) => {
     ...processCreateParams(params)
   });
 };
-function cleanParams(params, data) {
-  const p = typeof params === "function" ? params(data) : typeof params === "string" ? { message: params } : params;
-  const p2 = typeof p === "string" ? { message: p } : p;
-  return p2;
-}
-function custom(check, _params = {}, fatal) {
+function custom(check, params = {}, fatal) {
   if (check)
     return ZodAny.create().superRefine((data, ctx) => {
-      const r = check(data);
-      if (r instanceof Promise) {
-        return r.then((r2) => {
-          if (!r2) {
-            const params = cleanParams(_params, data);
-            const _fatal = params.fatal ?? fatal ?? true;
-            ctx.addIssue({ code: "custom", ...params, fatal: _fatal });
-          }
-        });
+      var _a, _b;
+      if (!check(data)) {
+        const p = typeof params === "function" ? params(data) : typeof params === "string" ? { message: params } : params;
+        const _fatal = (_b = (_a = p.fatal) !== null && _a !== void 0 ? _a : fatal) !== null && _b !== void 0 ? _b : true;
+        const p2 = typeof p === "string" ? { message: p } : p;
+        ctx.addIssue({ code: "custom", ...p2, fatal: _fatal });
       }
-      if (!r) {
-        const params = cleanParams(_params, data);
-        const _fatal = params.fatal ?? fatal ?? true;
-        ctx.addIssue({ code: "custom", ...params, fatal: _fatal });
-      }
-      return;
     });
   return ZodAny.create();
 }
@@ -4072,16 +3960,132 @@ var ostring = () => stringType().optional();
 var onumber = () => numberType().optional();
 var oboolean = () => booleanType().optional();
 var coerce = {
-  string: ((arg) => ZodString.create({ ...arg, coerce: true })),
-  number: ((arg) => ZodNumber.create({ ...arg, coerce: true })),
-  boolean: ((arg) => ZodBoolean.create({
+  string: (arg) => ZodString.create({ ...arg, coerce: true }),
+  number: (arg) => ZodNumber.create({ ...arg, coerce: true }),
+  boolean: (arg) => ZodBoolean.create({
     ...arg,
     coerce: true
-  })),
-  bigint: ((arg) => ZodBigInt.create({ ...arg, coerce: true })),
-  date: ((arg) => ZodDate.create({ ...arg, coerce: true }))
+  }),
+  bigint: (arg) => ZodBigInt.create({ ...arg, coerce: true }),
+  date: (arg) => ZodDate.create({ ...arg, coerce: true })
 };
 var NEVER = INVALID;
+var z = /* @__PURE__ */ Object.freeze({
+  __proto__: null,
+  defaultErrorMap: errorMap,
+  setErrorMap,
+  getErrorMap,
+  makeIssue,
+  EMPTY_PATH,
+  addIssueToContext,
+  ParseStatus,
+  INVALID,
+  DIRTY,
+  OK,
+  isAborted,
+  isDirty,
+  isValid,
+  isAsync,
+  get util() {
+    return util;
+  },
+  get objectUtil() {
+    return objectUtil;
+  },
+  ZodParsedType,
+  getParsedType,
+  ZodType,
+  datetimeRegex,
+  ZodString,
+  ZodNumber,
+  ZodBigInt,
+  ZodBoolean,
+  ZodDate,
+  ZodSymbol,
+  ZodUndefined,
+  ZodNull,
+  ZodAny,
+  ZodUnknown,
+  ZodNever,
+  ZodVoid,
+  ZodArray,
+  ZodObject,
+  ZodUnion,
+  ZodDiscriminatedUnion,
+  ZodIntersection,
+  ZodTuple,
+  ZodRecord,
+  ZodMap,
+  ZodSet,
+  ZodFunction,
+  ZodLazy,
+  ZodLiteral,
+  ZodEnum,
+  ZodNativeEnum,
+  ZodPromise,
+  ZodEffects,
+  ZodTransformer: ZodEffects,
+  ZodOptional,
+  ZodNullable,
+  ZodDefault,
+  ZodCatch,
+  ZodNaN,
+  BRAND,
+  ZodBranded,
+  ZodPipeline,
+  ZodReadonly,
+  custom,
+  Schema: ZodType,
+  ZodSchema: ZodType,
+  late,
+  get ZodFirstPartyTypeKind() {
+    return ZodFirstPartyTypeKind;
+  },
+  coerce,
+  any: anyType,
+  array: arrayType,
+  bigint: bigIntType,
+  boolean: booleanType,
+  date: dateType,
+  discriminatedUnion: discriminatedUnionType,
+  effect: effectsType,
+  "enum": enumType,
+  "function": functionType,
+  "instanceof": instanceOfType,
+  intersection: intersectionType,
+  lazy: lazyType,
+  literal: literalType,
+  map: mapType,
+  nan: nanType,
+  nativeEnum: nativeEnumType,
+  never: neverType,
+  "null": nullType,
+  nullable: nullableType,
+  number: numberType,
+  object: objectType,
+  oboolean,
+  onumber,
+  optional: optionalType,
+  ostring,
+  pipeline: pipelineType,
+  preprocess: preprocessType,
+  promise: promiseType,
+  record: recordType,
+  set: setType,
+  strictObject: strictObjectType,
+  string: stringType,
+  symbol: symbolType,
+  transformer: effectsType,
+  tuple: tupleType,
+  "undefined": undefinedType,
+  union: unionType,
+  unknown: unknownType,
+  "void": voidType,
+  NEVER,
+  ZodIssueCode,
+  quotelessJson,
+  ZodError
+});
 
 // src/regions.ts
 var AWS_REGIONS = {
@@ -4171,47 +4175,47 @@ var AWS_REGION_CODES = Object.values(AWS_REGIONS).map(
 );
 
 // src/platform/types.ts
-var storageBucketSchema = external_exports.object({
-  id: external_exports.string(),
-  name: external_exports.string(),
-  owner: external_exports.string(),
-  created_at: external_exports.string(),
-  updated_at: external_exports.string(),
-  public: external_exports.boolean()
+var storageBucketSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  owner: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  public: z.boolean()
 });
-var storageConfigSchema = external_exports.object({
-  fileSizeLimit: external_exports.number(),
-  features: external_exports.object({
-    imageTransformation: external_exports.object({ enabled: external_exports.boolean() }),
-    s3Protocol: external_exports.object({ enabled: external_exports.boolean() })
+var storageConfigSchema = z.object({
+  fileSizeLimit: z.number(),
+  features: z.object({
+    imageTransformation: z.object({ enabled: z.boolean() }),
+    s3Protocol: z.object({ enabled: z.boolean() })
   })
 });
-var organizationSchema = external_exports.object({
-  id: external_exports.string(),
-  name: external_exports.string(),
-  plan: external_exports.string().optional(),
-  allowed_release_channels: external_exports.array(external_exports.string()),
-  opt_in_tags: external_exports.array(external_exports.string())
+var organizationSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  plan: z.string().optional(),
+  allowed_release_channels: z.array(z.string()),
+  opt_in_tags: z.array(z.string())
 });
-var projectSchema = external_exports.object({
-  id: external_exports.string(),
-  organization_id: external_exports.string(),
-  name: external_exports.string(),
-  status: external_exports.string(),
-  created_at: external_exports.string(),
-  region: external_exports.string()
+var projectSchema = z.object({
+  id: z.string(),
+  organization_id: z.string(),
+  name: z.string(),
+  status: z.string(),
+  created_at: z.string(),
+  region: z.string()
 });
-var branchSchema = external_exports.object({
-  id: external_exports.string(),
-  name: external_exports.string(),
-  project_ref: external_exports.string(),
-  parent_project_ref: external_exports.string(),
-  is_default: external_exports.boolean(),
-  git_branch: external_exports.string().optional(),
-  pr_number: external_exports.number().optional(),
-  latest_check_run_id: external_exports.number().optional(),
-  persistent: external_exports.boolean(),
-  status: external_exports.enum([
+var branchSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  project_ref: z.string(),
+  parent_project_ref: z.string(),
+  is_default: z.boolean(),
+  git_branch: z.string().optional(),
+  pr_number: z.number().optional(),
+  latest_check_run_id: z.number().optional(),
+  persistent: z.boolean(),
+  status: z.enum([
     "CREATING_PROJECT",
     "RUNNING_MIGRATIONS",
     "MIGRATIONS_PASSED",
@@ -4219,81 +4223,85 @@ var branchSchema = external_exports.object({
     "FUNCTIONS_DEPLOYED",
     "FUNCTIONS_FAILED"
   ]),
-  created_at: external_exports.string(),
-  updated_at: external_exports.string()
+  created_at: z.string(),
+  updated_at: z.string()
 });
-var edgeFunctionSchema = external_exports.object({
-  id: external_exports.string(),
-  slug: external_exports.string(),
-  name: external_exports.string(),
-  status: external_exports.string(),
-  version: external_exports.number(),
-  created_at: external_exports.number().optional(),
-  updated_at: external_exports.number().optional(),
-  verify_jwt: external_exports.boolean().optional(),
-  import_map: external_exports.boolean().optional(),
-  import_map_path: external_exports.string().optional(),
-  entrypoint_path: external_exports.string().optional(),
-  files: external_exports.array(
-    external_exports.object({
-      name: external_exports.string(),
-      content: external_exports.string()
+var edgeFunctionSchema = z.object({
+  id: z.string(),
+  slug: z.string(),
+  name: z.string(),
+  status: z.string(),
+  version: z.number(),
+  created_at: z.number().optional(),
+  updated_at: z.number().optional(),
+  verify_jwt: z.boolean().optional(),
+  import_map: z.boolean().optional(),
+  import_map_path: z.string().optional(),
+  entrypoint_path: z.string().optional(),
+  files: z.array(
+    z.object({
+      name: z.string(),
+      content: z.string()
     })
   )
 });
-var createProjectOptionsSchema = external_exports.object({
-  name: external_exports.string(),
-  organization_id: external_exports.string(),
-  region: external_exports.enum(AWS_REGION_CODES).optional(),
-  db_pass: external_exports.string().optional()
+var createProjectOptionsSchema = z.object({
+  name: z.string(),
+  organization_id: z.string(),
+  region: z.enum(AWS_REGION_CODES).optional(),
+  db_pass: z.string().optional()
 });
-var createBranchOptionsSchema = external_exports.object({
-  name: external_exports.string()
+var createBranchOptionsSchema = z.object({
+  name: z.string()
 });
-var resetBranchOptionsSchema = external_exports.object({
-  migration_version: external_exports.string().optional()
+var resetBranchOptionsSchema = z.object({
+  migration_version: z.string().optional()
 });
-var deployEdgeFunctionOptionsSchema = external_exports.object({
-  name: external_exports.string(),
-  entrypoint_path: external_exports.string(),
-  import_map_path: external_exports.string().optional(),
-  files: external_exports.array(
-    external_exports.object({
-      name: external_exports.string(),
-      content: external_exports.string()
+var deployEdgeFunctionOptionsSchema = z.object({
+  name: z.string(),
+  entrypoint_path: z.string(),
+  import_map_path: z.string().optional(),
+  files: z.array(
+    z.object({
+      name: z.string(),
+      content: z.string()
     })
-  )
+  ),
+  verify_jwt: z.boolean().optional()
 });
-var executeSqlOptionsSchema = external_exports.object({
-  query: external_exports.string(),
-  read_only: external_exports.boolean().optional()
+var updateEdgeFunctionOptionsSchema = z.object({
+  verify_jwt: z.boolean().optional()
 });
-var applyMigrationOptionsSchema = external_exports.object({
-  name: external_exports.string(),
-  query: external_exports.string()
+var executeSqlOptionsSchema = z.object({
+  query: z.string(),
+  read_only: z.boolean().optional()
 });
-var migrationSchema = external_exports.object({
-  version: external_exports.string(),
-  name: external_exports.string().optional()
+var applyMigrationOptionsSchema = z.object({
+  name: z.string(),
+  query: z.string()
 });
-var getLogsOptionsSchema = external_exports.object({
-  sql: external_exports.string(),
-  iso_timestamp_start: external_exports.string().optional(),
-  iso_timestamp_end: external_exports.string().optional()
+var migrationSchema = z.object({
+  version: z.string(),
+  name: z.string().optional()
 });
-var generateTypescriptTypesResultSchema = external_exports.object({
-  types: external_exports.string()
+var getLogsOptionsSchema = z.object({
+  sql: z.string(),
+  iso_timestamp_start: z.string().optional(),
+  iso_timestamp_end: z.string().optional()
 });
-var secretSchema = external_exports.object({
-  name: external_exports.string(),
-  value: external_exports.string(),
-  updated_at: external_exports.string().nullable()
+var generateTypescriptTypesResultSchema = z.object({
+  types: z.string()
 });
-var createSecretOptionsSchema = external_exports.object({
-  name: external_exports.string(),
-  value: external_exports.string()
+var secretSchema = z.object({
+  name: z.string(),
+  value: z.string(),
+  updated_at: z.string().nullable()
 });
-var createSecretsOptionsSchema = external_exports.array(createSecretOptionsSchema);
+var createSecretOptionsSchema = z.object({
+  name: z.string(),
+  value: z.string()
+});
+var createSecretsOptionsSchema = z.array(createSecretOptionsSchema);
 
 // src/platform/polardb-platform.ts
 var PolarDBPlatform = class {
@@ -4523,6 +4531,40 @@ var PolarDBPlatform = class {
       throw new Error(`Failed to deploy Edge Function: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
+  async updateEdgeFunction(projectId, functionSlug, options) {
+    try {
+      const { verify_jwt } = options;
+      const body = {};
+      if (verify_jwt !== void 0) {
+        body.verify_jwt = verify_jwt;
+      }
+      const response = await fetch(`${this.apiUrl}/api/v1/projects/default/functions/${functionSlug}`, {
+        method: "PATCH",
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify(body)
+      });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update Edge Function: ${response.status} ${errorText}`);
+      }
+      const result = await response.json();
+      return {
+        id: result.id || functionSlug,
+        slug: functionSlug,
+        name: result.name || functionSlug,
+        status: result.status || "active",
+        version: result.version || 1,
+        created_at: result.created_at || Date.now(),
+        updated_at: result.updated_at || Date.now(),
+        verify_jwt: result.verify_jwt ?? verify_jwt ?? false,
+        import_map: result.import_map || false,
+        import_map_path: result.import_map_path,
+        entrypoint_path: result.entrypoint_path
+      };
+    } catch (error) {
+      throw new Error(`Failed to update Edge Function: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
   // Edge function secrets
   async listSecrets(projectId) {
     try {
@@ -4671,6 +4713,7 @@ var PolarDBPlatform = class {
   resetBranchOptionsSchema,
   secretSchema,
   storageBucketSchema,
-  storageConfigSchema
+  storageConfigSchema,
+  updateEdgeFunctionOptionsSchema
 });
 //# sourceMappingURL=index.cjs.map
