@@ -1,6 +1,6 @@
 import { Tool } from '@supabase/mcp-utils';
 import { z } from 'zod';
-import { S as SupabasePlatform } from '../types-6YVDhwu7.cjs';
+import { S as SupabasePlatform } from '../types-C7jyH6Aj.cjs';
 
 interface PolarDBToolsOptions {
     platform: SupabasePlatform;
@@ -32,19 +32,19 @@ declare function getPolarDBTools({ platform, projectId, readOnly }: PolarDBTools
     get_anon_key: Tool<z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>, string>;
     get_project_url: Tool<z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>, string>;
     list_storage_buckets: Tool<z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>, {
-        public: boolean;
         name: string;
+        public: boolean;
         id: string;
         owner: string;
         created_at: string;
         updated_at: string;
     }[]>;
     list_edge_functions: Tool<z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>, {
-        name: string;
+        version: number;
         status: string;
+        name: string;
         id: string;
         slug: string;
-        version: number;
         files: {
             name: string;
             content: string;
@@ -63,11 +63,11 @@ declare function getPolarDBTools({ platform, projectId, readOnly }: PolarDBTools
     }, {
         slug: string;
     }>, {
-        name: string;
+        version: number;
         status: string;
+        name: string;
         id: string;
         slug: string;
-        version: number;
         files: {
             name: string;
             content: string;
@@ -110,11 +110,11 @@ declare function getPolarDBTools({ platform, projectId, readOnly }: PolarDBTools
         }[];
         import_map_path?: string | undefined;
     }>, Omit<{
-        name: string;
+        version: number;
         status: string;
+        name: string;
         id: string;
         slug: string;
-        version: number;
         files: {
             name: string;
             content: string;
@@ -127,8 +127,8 @@ declare function getPolarDBTools({ platform, projectId, readOnly }: PolarDBTools
         entrypoint_path?: string | undefined;
     }, "files">>;
     list_ef_secrets: Tool<z.ZodObject<{}, "strip", z.ZodTypeAny, {}, {}>, {
-        name: string;
         value: string;
+        name: string;
         updated_at: string | null;
     }[]>;
     create_ef_secrets: Tool<z.ZodObject<{
@@ -136,25 +136,25 @@ declare function getPolarDBTools({ platform, projectId, readOnly }: PolarDBTools
             name: z.ZodString;
             value: z.ZodString;
         }, "strip", z.ZodTypeAny, {
-            name: string;
             value: string;
+            name: string;
         }, {
-            name: string;
             value: string;
+            name: string;
         }>, "many">;
     }, "strip", z.ZodTypeAny, {
         secrets: {
-            name: string;
             value: string;
+            name: string;
         }[];
     }, {
         secrets: {
-            name: string;
             value: string;
+            name: string;
         }[];
     }>, {
-        name: string;
         value: string;
+        name: string;
         updated_at: string | null;
     }[]>;
     delete_ef_secrets: Tool<z.ZodObject<{
