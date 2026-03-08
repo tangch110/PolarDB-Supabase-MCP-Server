@@ -24666,6 +24666,9 @@ function getStorageTools({ platform, projectId }) {
   };
 }
 
+// src/tools/polardb-tools.ts
+var import_fs = require("fs");
+
 // src/prompts/auth-nextjs.md
 var auth_nextjs_default = "# Bootstrap Next.js app with Supabase Auth\n\n## \u{1F3AF} \u76EE\u6807\n\u5728 Next.js \u5E94\u7528\u4E2D\u5FEB\u901F\u8BBE\u7F6E Supabase \u8BA4\u8BC1\u7CFB\u7EDF\u3002\n\n## \u{1F6E0}\uFE0F \u6240\u9700\u5DE5\u5177\n- Next.js \u9879\u76EE\n- Supabase \u9879\u76EE\n- Supabase JavaScript \u5BA2\u6237\u7AEF\n\n## \u{1F680} \u5B9E\u73B0\u6B65\u9AA4\n\n### 1. \u5B89\u88C5\u4F9D\u8D56\n```bash\nnpm install @supabase/supabase-js @supabase/auth-helpers-nextjs\n```\n\n### 2. \u73AF\u5883\u53D8\u91CF\u914D\u7F6E\n```env\nNEXT_PUBLIC_SUPABASE_URL=your_supabase_url\nNEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key\n```\n\n### 3. \u521B\u5EFA Supabase \u5BA2\u6237\u7AEF\n```typescript\n// lib/supabase.ts\nimport { createClient } from '@supabase/supabase-js'\n\nexport const supabase = createClient(\n  process.env.NEXT_PUBLIC_SUPABASE_URL!,\n  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!\n)\n```\n\n### 4. \u8BA4\u8BC1\u7EC4\u4EF6\u793A\u4F8B\n```typescript\n// components/Auth.tsx\nimport { useState } from 'react'\nimport { supabase } from '../lib/supabase'\n\nexport default function Auth() {\n  const [loading, setLoading] = useState(false)\n  const [email, setEmail] = useState('')\n  const [password, setPassword] = useState('')\n\n  const handleSignUp = async (e: React.FormEvent) => {\n    e.preventDefault()\n    setLoading(true)\n    \n    const { error } = await supabase.auth.signUp({\n      email,\n      password,\n    })\n    \n    if (error) console.log('Error:', error.message)\n    else alert('Check your email for the confirmation link!')\n    setLoading(false)\n  }\n\n  const handleSignIn = async (e: React.FormEvent) => {\n    e.preventDefault()\n    setLoading(true)\n    \n    const { error } = await supabase.auth.signInWithPassword({\n      email,\n      password,\n    })\n    \n    if (error) console.log('Error:', error.message)\n    setLoading(false)\n  }\n\n  return (\n    <div className=\"auth-container\">\n      <form onSubmit={handleSignUp}>\n        <input\n          type=\"email\"\n          placeholder=\"Your email\"\n          value={email}\n          onChange={(e) => setEmail(e.target.value)}\n        />\n        <input\n          type=\"password\"\n          placeholder=\"Your password\"\n          value={password}\n          onChange={(e) => setPassword(e.target.value)}\n        />\n        <button type=\"submit\" disabled={loading}>\n          {loading ? 'Loading...' : 'Sign Up'}\n        </button>\n      </form>\n      \n      <form onSubmit={handleSignIn}>\n        <button type=\"submit\" disabled={loading}>\n          {loading ? 'Loading...' : 'Sign In'}\n        </button>\n      </form>\n    </div>\n  )\n}\n```\n\n## \u{1F512} \u5B89\u5168\u6700\u4F73\u5B9E\u8DF5\n- \u4F7F\u7528\u73AF\u5883\u53D8\u91CF\u5B58\u50A8\u654F\u611F\u4FE1\u606F\n- \u5B9E\u73B0\u9002\u5F53\u7684\u9519\u8BEF\u5904\u7406\n- \u6DFB\u52A0\u52A0\u8F7D\u72B6\u6001\u548C\u7528\u6237\u53CD\u9988\n- \u8003\u8651\u5B9E\u73B0\u5BC6\u7801\u5F3A\u5EA6\u9A8C\u8BC1\n\n## \u{1F4DA} \u76F8\u5173\u8D44\u6E90\n- [Supabase Auth Documentation](https://supabase.com/docs/guides/auth)\n- [Next.js Documentation](https://nextjs.org/docs)\n\n\n";
 
@@ -24844,25 +24847,42 @@ function getPolarDBTools({ platform, projectId, readOnly }) {
       }
     }),
     deploy_edge_function: bv({
-      description: "Deploy an Edge Function",
+      description: "Deploy an Edge Function to a Supabase project. If the function already exists, this will create a new version.",
       parameters: z.object({
         name: z.string().describe("The name/slug of the Edge Function"),
-        entrypoint_path: z.string().describe("The entrypoint path for the function"),
+        entrypoint_path: z.string().default("index.ts").describe("The entrypoint path for the function"),
         import_map_path: z.string().optional().describe("The import map path (optional)"),
         files: z.array(z.object({
           name: z.string().describe("The filename"),
-          content: z.string().describe("The file content")
-        })).describe("Array of files to deploy")
+          content: z.string().optional().describe("The file content (alternative to file_path)"),
+          file_path: z.string().optional().describe("Local file path, alternative to content")
+        })).describe("Array of files to deploy. Each file must have either content or file_path"),
+        verify_jwt: z.boolean().optional().describe("Whether to enable JWT verification for this function")
       }),
-      async execute({ name, entrypoint_path, import_map_path, files }) {
+      async execute({ name, entrypoint_path, import_map_path, files, verify_jwt }) {
         if (readOnly) {
           throw new Error("Cannot deploy Edge Functions in read-only mode");
         }
+        const processedFiles = files.map((file) => {
+          if (file.content) {
+            return { name: file.name, content: file.content };
+          } else if (file.file_path) {
+            try {
+              const content = (0, import_fs.readFileSync)(file.file_path, "utf-8");
+              return { name: file.name, content };
+            } catch (error) {
+              throw new Error(`Failed to read file ${file.file_path}: ${error instanceof Error ? error.message : String(error)}`);
+            }
+          } else {
+            throw new Error(`File ${file.name} must have either content or file_path`);
+          }
+        });
         return await platform.deployEdgeFunction(projectId || "default", {
           name,
           entrypoint_path,
           import_map_path,
-          files
+          files: processedFiles,
+          verify_jwt
         });
       }
     }),
@@ -24902,6 +24922,24 @@ function getPolarDBTools({ platform, projectId, readOnly }) {
         }
         await platform.deleteSecrets(projectId || "default", secret_names);
         return { success: true, message: "Secrets deleted successfully" };
+      }
+    }),
+    update_edge_function: bv({
+      description: "Update an existing Edge Function configuration (e.g., enable/disable JWT verification).",
+      parameters: z.object({
+        function_slug: z.string().describe("The slug of the function to update"),
+        verify_jwt: z.boolean().optional().describe("Whether to enable JWT verification for this function")
+      }),
+      async execute({ function_slug, verify_jwt }) {
+        if (readOnly) {
+          throw new Error("Cannot update Edge Functions in read-only mode");
+        }
+        if (verify_jwt === void 0) {
+          throw new Error("At least one field to update must be provided (e.g., verify_jwt)");
+        }
+        return await platform.updateEdgeFunction(projectId || "default", function_slug, {
+          verify_jwt
+        });
       }
     }),
     get_best_practices: bv({

@@ -3903,6 +3903,9 @@ function bv(a16) {
   return a16;
 }
 
+// src/tools/polardb-tools.ts
+var import_fs = require("fs");
+
 // ../../node_modules/.pnpm/registry.npmmirror.com+zod@3.24.1/node_modules/zod/lib/index.mjs
 var util;
 (function(util2) {
@@ -8125,25 +8128,42 @@ function getPolarDBTools({ platform, projectId, readOnly }) {
       }
     }),
     deploy_edge_function: bv({
-      description: "Deploy an Edge Function",
+      description: "Deploy an Edge Function to a Supabase project. If the function already exists, this will create a new version.",
       parameters: z.object({
         name: z.string().describe("The name/slug of the Edge Function"),
-        entrypoint_path: z.string().describe("The entrypoint path for the function"),
+        entrypoint_path: z.string().default("index.ts").describe("The entrypoint path for the function"),
         import_map_path: z.string().optional().describe("The import map path (optional)"),
         files: z.array(z.object({
           name: z.string().describe("The filename"),
-          content: z.string().describe("The file content")
-        })).describe("Array of files to deploy")
+          content: z.string().optional().describe("The file content (alternative to file_path)"),
+          file_path: z.string().optional().describe("Local file path, alternative to content")
+        })).describe("Array of files to deploy. Each file must have either content or file_path"),
+        verify_jwt: z.boolean().optional().describe("Whether to enable JWT verification for this function")
       }),
-      async execute({ name, entrypoint_path, import_map_path, files }) {
+      async execute({ name, entrypoint_path, import_map_path, files, verify_jwt }) {
         if (readOnly) {
           throw new Error("Cannot deploy Edge Functions in read-only mode");
         }
+        const processedFiles = files.map((file) => {
+          if (file.content) {
+            return { name: file.name, content: file.content };
+          } else if (file.file_path) {
+            try {
+              const content = (0, import_fs.readFileSync)(file.file_path, "utf-8");
+              return { name: file.name, content };
+            } catch (error) {
+              throw new Error(`Failed to read file ${file.file_path}: ${error instanceof Error ? error.message : String(error)}`);
+            }
+          } else {
+            throw new Error(`File ${file.name} must have either content or file_path`);
+          }
+        });
         return await platform.deployEdgeFunction(projectId || "default", {
           name,
           entrypoint_path,
           import_map_path,
-          files
+          files: processedFiles,
+          verify_jwt
         });
       }
     }),
@@ -8183,6 +8203,24 @@ function getPolarDBTools({ platform, projectId, readOnly }) {
         }
         await platform.deleteSecrets(projectId || "default", secret_names);
         return { success: true, message: "Secrets deleted successfully" };
+      }
+    }),
+    update_edge_function: bv({
+      description: "Update an existing Edge Function configuration (e.g., enable/disable JWT verification).",
+      parameters: z.object({
+        function_slug: z.string().describe("The slug of the function to update"),
+        verify_jwt: z.boolean().optional().describe("Whether to enable JWT verification for this function")
+      }),
+      async execute({ function_slug, verify_jwt }) {
+        if (readOnly) {
+          throw new Error("Cannot update Edge Functions in read-only mode");
+        }
+        if (verify_jwt === void 0) {
+          throw new Error("At least one field to update must be provided (e.g., verify_jwt)");
+        }
+        return await platform.updateEdgeFunction(projectId || "default", function_slug, {
+          verify_jwt
+        });
       }
     }),
     get_best_practices: bv({

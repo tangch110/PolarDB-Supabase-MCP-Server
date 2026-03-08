@@ -9,15 +9,15 @@ declare const storageBucketSchema: z.ZodObject<{
     updated_at: z.ZodString;
     public: z.ZodBoolean;
 }, "strip", z.ZodTypeAny, {
-    name: string;
     public: boolean;
+    name: string;
     id: string;
     owner: string;
     created_at: string;
     updated_at: string;
 }, {
-    name: string;
     public: boolean;
+    name: string;
     id: string;
     owner: string;
     created_at: string;
@@ -56,6 +56,7 @@ declare const storageConfigSchema: z.ZodObject<{
         };
     }>;
 }, "strip", z.ZodTypeAny, {
+    fileSizeLimit: number;
     features: {
         imageTransformation: {
             enabled: boolean;
@@ -64,8 +65,8 @@ declare const storageConfigSchema: z.ZodObject<{
             enabled: boolean;
         };
     };
-    fileSizeLimit: number;
 }, {
+    fileSizeLimit: number;
     features: {
         imageTransformation: {
             enabled: boolean;
@@ -74,7 +75,6 @@ declare const storageConfigSchema: z.ZodObject<{
             enabled: boolean;
         };
     };
-    fileSizeLimit: number;
 }>;
 declare const organizationSchema: z.ZodObject<{
     id: z.ZodString;
@@ -103,19 +103,19 @@ declare const projectSchema: z.ZodObject<{
     created_at: z.ZodString;
     region: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    status: string;
     name: string;
+    status: string;
+    region: string;
     id: string;
     created_at: string;
     organization_id: string;
-    region: string;
 }, {
-    status: string;
     name: string;
+    status: string;
+    region: string;
     id: string;
     created_at: string;
     organization_id: string;
-    region: string;
 }>;
 declare const branchSchema: z.ZodObject<{
     id: z.ZodString;
@@ -131,8 +131,8 @@ declare const branchSchema: z.ZodObject<{
     created_at: z.ZodString;
     updated_at: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    status: "CREATING_PROJECT" | "RUNNING_MIGRATIONS" | "MIGRATIONS_PASSED" | "MIGRATIONS_FAILED" | "FUNCTIONS_DEPLOYED" | "FUNCTIONS_FAILED";
     name: string;
+    status: "CREATING_PROJECT" | "RUNNING_MIGRATIONS" | "MIGRATIONS_PASSED" | "MIGRATIONS_FAILED" | "FUNCTIONS_DEPLOYED" | "FUNCTIONS_FAILED";
     id: string;
     created_at: string;
     updated_at: string;
@@ -144,8 +144,8 @@ declare const branchSchema: z.ZodObject<{
     pr_number?: number | undefined;
     latest_check_run_id?: number | undefined;
 }, {
-    status: "CREATING_PROJECT" | "RUNNING_MIGRATIONS" | "MIGRATIONS_PASSED" | "MIGRATIONS_FAILED" | "FUNCTIONS_DEPLOYED" | "FUNCTIONS_FAILED";
     name: string;
+    status: "CREATING_PROJECT" | "RUNNING_MIGRATIONS" | "MIGRATIONS_PASSED" | "MIGRATIONS_FAILED" | "FUNCTIONS_DEPLOYED" | "FUNCTIONS_FAILED";
     id: string;
     created_at: string;
     updated_at: string;
@@ -180,11 +180,11 @@ declare const edgeFunctionSchema: z.ZodObject<{
         content: string;
     }>, "many">;
 }, "strip", z.ZodTypeAny, {
-    version: number;
-    status: string;
     name: string;
+    status: string;
     id: string;
     slug: string;
+    version: number;
     files: {
         name: string;
         content: string;
@@ -196,11 +196,11 @@ declare const edgeFunctionSchema: z.ZodObject<{
     import_map_path?: string | undefined;
     entrypoint_path?: string | undefined;
 }, {
-    version: number;
-    status: string;
     name: string;
+    status: string;
     id: string;
     slug: string;
+    version: number;
     files: {
         name: string;
         content: string;
@@ -215,17 +215,17 @@ declare const edgeFunctionSchema: z.ZodObject<{
 declare const createProjectOptionsSchema: z.ZodObject<{
     name: z.ZodString;
     organization_id: z.ZodString;
-    region: z.ZodOptional<z.ZodEnum<["sa-east-1", "ap-southeast-2", "ap-northeast-2", "ap-northeast-1", "ap-southeast-1", "ap-south-1", "eu-north-1", "eu-central-2", "eu-central-1", "eu-west-3", "eu-west-2", "eu-west-1", "ca-central-1", "us-east-2", "us-east-1", "us-west-1"]>>;
+    region: z.ZodOptional<z.ZodEnum<["sa-east-1", "ap-south-1", "ca-central-1", "eu-central-2", "eu-central-1", "eu-north-1", "eu-west-3", "eu-west-2", "eu-west-1", "ap-southeast-2", "ap-northeast-2", "ap-northeast-1", "ap-southeast-1", "us-west-1", "us-east-2", "us-east-1"]>>;
     db_pass: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     name: string;
     organization_id: string;
-    region?: "us-west-1" | "us-east-1" | "us-east-2" | "ca-central-1" | "eu-west-1" | "eu-west-2" | "eu-west-3" | "eu-central-1" | "eu-central-2" | "eu-north-1" | "ap-south-1" | "ap-southeast-1" | "ap-northeast-1" | "ap-northeast-2" | "ap-southeast-2" | "sa-east-1" | undefined;
+    region?: "us-east-1" | "us-east-2" | "us-west-1" | "ap-southeast-1" | "ap-northeast-1" | "ap-northeast-2" | "ap-southeast-2" | "eu-west-1" | "eu-west-2" | "eu-west-3" | "eu-north-1" | "eu-central-1" | "eu-central-2" | "ca-central-1" | "ap-south-1" | "sa-east-1" | undefined;
     db_pass?: string | undefined;
 }, {
     name: string;
     organization_id: string;
-    region?: "us-west-1" | "us-east-1" | "us-east-2" | "ca-central-1" | "eu-west-1" | "eu-west-2" | "eu-west-3" | "eu-central-1" | "eu-central-2" | "eu-north-1" | "ap-south-1" | "ap-southeast-1" | "ap-northeast-1" | "ap-northeast-2" | "ap-southeast-2" | "sa-east-1" | undefined;
+    region?: "us-east-1" | "us-east-2" | "us-west-1" | "ap-southeast-1" | "ap-northeast-1" | "ap-northeast-2" | "ap-southeast-2" | "eu-west-1" | "eu-west-2" | "eu-west-3" | "eu-north-1" | "eu-central-1" | "eu-central-2" | "ca-central-1" | "ap-south-1" | "sa-east-1" | undefined;
     db_pass?: string | undefined;
 }>;
 declare const createBranchOptionsSchema: z.ZodObject<{
@@ -338,33 +338,33 @@ declare const secretSchema: z.ZodObject<{
     value: z.ZodString;
     updated_at: z.ZodNullable<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    value: string;
     name: string;
+    value: string;
     updated_at: string | null;
 }, {
-    value: string;
     name: string;
+    value: string;
     updated_at: string | null;
 }>;
 declare const createSecretOptionsSchema: z.ZodObject<{
     name: z.ZodString;
     value: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    value: string;
     name: string;
+    value: string;
 }, {
-    value: string;
     name: string;
+    value: string;
 }>;
 declare const createSecretsOptionsSchema: z.ZodArray<z.ZodObject<{
     name: z.ZodString;
     value: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    value: string;
     name: string;
+    value: string;
 }, {
-    value: string;
     name: string;
+    value: string;
 }>, "many">;
 type Organization = z.infer<typeof organizationSchema>;
 type Project = z.infer<typeof projectSchema>;
